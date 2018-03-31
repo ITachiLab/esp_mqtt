@@ -13,8 +13,7 @@
 * \param size size of buf
 * \return 0 if successfull, otherwise failed
 */
-I16 ICACHE_FLASH_ATTR RINGBUF_Init(RINGBUF *r, U8* buf, I32 size)
-{
+I16 ICACHE_FLASH_ATTR RINGBUF_Init(RINGBUF *r, U8* buf, I32 size) {
   if (r == NULL || buf == NULL || size < 2) return -1;
 
   r->p_o = r->p_r = r->p_w = buf;
@@ -29,8 +28,7 @@ I16 ICACHE_FLASH_ATTR RINGBUF_Init(RINGBUF *r, U8* buf, I32 size)
 * \param c character to be put
 * \return 0 if successfull, otherwise failed
 */
-I16 ICACHE_FLASH_ATTR RINGBUF_Put(RINGBUF *r, U8 c)
-{
+I16 ICACHE_FLASH_ATTR RINGBUF_Put(RINGBUF *r, U8 c) {
   if (r->fill_cnt >= r->size)return -1; // ring buffer is full, this should be atomic operation
 
 
@@ -50,8 +48,7 @@ I16 ICACHE_FLASH_ATTR RINGBUF_Put(RINGBUF *r, U8 c)
 * \param c read character
 * \return 0 if successfull, otherwise failed
 */
-I16 ICACHE_FLASH_ATTR RINGBUF_Get(RINGBUF *r, U8* c)
-{
+I16 ICACHE_FLASH_ATTR RINGBUF_Get(RINGBUF *r, U8* c) {
   if (r->fill_cnt <= 0)return -1;     // ring buffer is empty, this should be atomic operation
 
 

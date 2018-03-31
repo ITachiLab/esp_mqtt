@@ -38,8 +38,7 @@
 #include "utils.h"
 
 
-uint8_t ICACHE_FLASH_ATTR UTILS_IsIPV4 (int8_t *str)
-{
+uint8_t ICACHE_FLASH_ATTR UTILS_IsIPV4(int8_t *str) {
   uint8_t segs = 0;   /* Segment count. */
   uint8_t chcnt = 0;  /* Character count within segment. */
   uint8_t accum = 0;  /* Accumulator for segment. */
@@ -88,8 +87,7 @@ uint8_t ICACHE_FLASH_ATTR UTILS_IsIPV4 (int8_t *str)
 
   return 1;
 }
-uint8_t ICACHE_FLASH_ATTR UTILS_StrToIP(const int8_t* str, void *ip)
-{
+uint8_t ICACHE_FLASH_ATTR UTILS_StrToIP(const int8_t* str, void *ip) {
 
   /* The count of the number of bytes processed. */
   int i;
@@ -103,7 +101,7 @@ uint8_t ICACHE_FLASH_ATTR UTILS_StrToIP(const int8_t* str, void *ip)
     /* The value of this byte. */
     int n = 0;
     while (1) {
-      c = * start;
+      c = *start;
       start++;
       if (c >= '0' && c <= '9') {
         n *= 10;
@@ -114,8 +112,7 @@ uint8_t ICACHE_FLASH_ATTR UTILS_StrToIP(const int8_t* str, void *ip)
          the end of the numbers, we will allow any character. */
       else if ((i < 3 && c == '.') || i == 3) {
         break;
-      }
-      else {
+      } else {
         return 0;
       }
     }
@@ -127,8 +124,7 @@ uint8_t ICACHE_FLASH_ATTR UTILS_StrToIP(const int8_t* str, void *ip)
   return 1;
 
 }
-uint32_t ICACHE_FLASH_ATTR UTILS_Atoh(const int8_t *s)
-{
+uint32_t ICACHE_FLASH_ATTR UTILS_Atoh(const int8_t *s) {
   uint32_t value = 0, digit;
   int8_t c;
 

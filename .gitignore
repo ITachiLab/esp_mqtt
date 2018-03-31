@@ -5,3 +5,7 @@ firmware/
 .settings/
 .DS_Store
 include/user_config.local.h
+.vs/
+*.sln
+*.vcxproj.*
+*.vcxproj

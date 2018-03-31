@@ -38,16 +38,14 @@
 #include "mem.h"
 
 MQTT_Client mqttClient;
-static void ICACHE_FLASH_ATTR wifiConnectCb(uint8_t status)
-{
+static void ICACHE_FLASH_ATTR wifiConnectCb(uint8_t status) {
   if (status == STATION_GOT_IP) {
     MQTT_Connect(&mqttClient);
   } else {
     MQTT_Disconnect(&mqttClient);
   }
 }
-static void ICACHE_FLASH_ATTR mqttConnectedCb(uint32_t *args)
-{
+static void ICACHE_FLASH_ATTR mqttConnectedCb(uint32_t *args) {
   MQTT_Client* client = (MQTT_Client*)args;
   INFO("MQTT: Connected\r\n");
   MQTT_Subscribe(client, "/mqtt/topic/0", 0);
@@ -60,22 +58,19 @@ static void ICACHE_FLASH_ATTR mqttConnectedCb(uint32_t *args)
 
 }
 
-static void ICACHE_FLASH_ATTR mqttDisconnectedCb(uint32_t *args)
-{
+static void ICACHE_FLASH_ATTR mqttDisconnectedCb(uint32_t *args) {
   MQTT_Client* client = (MQTT_Client*)args;
   INFO("MQTT: Disconnected\r\n");
 }
 
-static void ICACHE_FLASH_ATTR mqttPublishedCb(uint32_t *args)
-{
+static void ICACHE_FLASH_ATTR mqttPublishedCb(uint32_t *args) {
   MQTT_Client* client = (MQTT_Client*)args;
   INFO("MQTT: Published\r\n");
 }
 
-static void ICACHE_FLASH_ATTR mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len)
-{
+static void ICACHE_FLASH_ATTR mqttDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len) {
   char *topicBuf = (char*)os_zalloc(topic_len + 1),
-        *dataBuf = (char*)os_zalloc(data_len + 1);
+    *dataBuf = (char*)os_zalloc(data_len + 1);
 
   MQTT_Client* client = (MQTT_Client*)args;
   os_memcpy(topicBuf, topic, topic_len);
@@ -87,8 +82,7 @@ static void ICACHE_FLASH_ATTR mqttDataCb(uint32_t *args, const char* topic, uint
   os_free(dataBuf);
 }
 
-void ICACHE_FLASH_ATTR print_info()
-{
+void ICACHE_FLASH_ATTR print_info() {
   INFO("\r\n\r\n[INFO] BOOTUP...\r\n");
   INFO("[INFO] SDK: %s\r\n", system_get_sdk_version());
   INFO("[INFO] Chip ID: %08X\r\n", system_get_chip_id());
@@ -102,15 +96,13 @@ void ICACHE_FLASH_ATTR print_info()
 }
 
 
-static void ICACHE_FLASH_ATTR app_init(void)
-{
+static void ICACHE_FLASH_ATTR app_init(void) {
   uart_init(BIT_RATE_115200, BIT_RATE_115200);
   print_info();
   MQTT_InitConnection(&mqttClient, MQTT_HOST, MQTT_PORT, DEFAULT_SECURITY);
   //MQTT_InitConnection(&mqttClient, "192.168.11.122", 1880, 0);
 
-  if ( !MQTT_InitClient(&mqttClient, MQTT_CLIENT_ID, MQTT_USER, MQTT_PASS, MQTT_KEEPALIVE, MQTT_CLEAN_SESSION) )
-  {
+  if (!MQTT_InitClient(&mqttClient, MQTT_CLIENT_ID, MQTT_USER, MQTT_PASS, MQTT_KEEPALIVE, MQTT_CLEAN_SESSION)) {
     INFO("Failed to initialize properly. Check MQTT version.\r\n");
     return;
   }
@@ -123,7 +115,6 @@ static void ICACHE_FLASH_ATTR app_init(void)
 
   WIFI_Connect(STA_SSID, STA_PASS, wifiConnectCb);
 }
-void user_init(void)
-{
+void user_init(void) {
   system_init_done_cb(app_init);
 }
